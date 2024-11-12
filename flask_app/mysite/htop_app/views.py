@@ -1,19 +1,19 @@
-from flask import Flask
+from django.shortcuts import render
+
+
+from django.http import HttpResponse
 import os
 from datetime import datetime
 import subprocess
 import pytz
 
-app = Flask(__name__)
-
-@app.route('/htop')
-def htop():
+def htop(request):
     name = "Kudeti Tarun Teja"  # Replace with your actual full name
     username = os.getlogin()
     ist_time = datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')
     top_output = subprocess.check_output("top -bn1 | head -10", shell=True).decode()
 
-    return f"""
+    return HttpResponse(f"""
     <html>
     <body>
         <h1>/htop</h1>
@@ -23,7 +23,4 @@ def htop():
         <pre><strong>Top Output:</strong>\n{top_output}</pre>
     </body>
     </html>
-    """
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    """)
